@@ -21,6 +21,8 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import coil.compose.rememberImagePainter
+import coil.transform.CircleCropTransformation
 import com.ziyaad.profilecardlayout.ui.theme.MyTheme
 import com.ziyaad.profilecardlayout.ui.theme.lightGreen
 
@@ -79,14 +81,14 @@ fun ProfileCard(userProfile: UserProfile) {
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.Start
         ) {
-            ProfilePicture(userProfile.drawableId, userProfile.status)
+            ProfilePicture(userProfile.pictureUrl, userProfile.status)
             ProfileContent(userProfile.name, userProfile.status)
         }
     }
 }
 
 @Composable
-fun ProfilePicture(drawableId: Int, onlineStatus: Boolean) {
+fun ProfilePicture(pictureUrl: String, onlineStatus: Boolean) {
     Card(
         shape = CircleShape,
         border = BorderStroke(
@@ -99,10 +101,14 @@ fun ProfilePicture(drawableId: Int, onlineStatus: Boolean) {
         elevation = 4.dp
     ) {
         Image(
-            painter = painterResource(id = drawableId),
-            contentDescription = "Content Description",
-            modifier = Modifier.size(72.dp),
-            contentScale = ContentScale.Crop
+            painter = rememberImagePainter(
+                data = pictureUrl,
+                builder = {
+                    transformations(CircleCropTransformation())
+                }
+            ),
+            contentDescription = null,
+            modifier = Modifier.size(72.dp)
         )
     }
 }
