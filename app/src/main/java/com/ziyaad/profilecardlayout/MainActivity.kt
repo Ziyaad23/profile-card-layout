@@ -7,10 +7,9 @@ import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.material.Card
-import androidx.compose.material.Surface
-import androidx.compose.material.Text
+import androidx.compose.material.*
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -50,9 +49,10 @@ fun ProfileCard() {
         Row(
             modifier = Modifier.fillMaxWidth(),
             verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.Start) {
-                ProfilePicture()
-                ProfileContent()
+            horizontalArrangement = Arrangement.Start
+        ) {
+            ProfilePicture()
+            ProfileContent()
         }
     }
 }
@@ -69,14 +69,29 @@ fun ProfilePicture() {
             painter = painterResource(id = R.drawable.profilepicture),
             contentDescription = "Content Description",
             modifier = Modifier.size(72.dp),
-            contentScale = ContentScale.FillBounds
+            contentScale = ContentScale.Crop
         )
     }
 }
 
 @Composable
 fun ProfileContent() {
-    Text(text = "John Doe")
+    Column(
+        modifier = Modifier
+            .padding(8.dp)
+            .fillMaxWidth()
+    ) {
+        Text(
+            text = "John Doe",
+            style = MaterialTheme.typography.h5
+        )
+        CompositionLocalProvider(LocalContentAlpha provides ContentAlpha.medium) {
+            Text(
+                text = "Active Now",
+                style = MaterialTheme.typography.body2
+            )
+        }
+    }
 }
 
 @Preview(showBackground = true)
